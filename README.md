@@ -39,3 +39,7 @@ php artisan migrate
 ```
 npm run dev
 ```
+
+## Collection
+
+Download postman collection on folder /docs

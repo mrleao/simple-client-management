@@ -1,0 +1,207 @@
+{
+	"info": {
+		"_postman_id": "45090cea-c1d9-44ef-af36-ca9f55c6c2c8",
+		"name": "client-management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11765948"
+	},
+	"item": [
+		{
+			"name": "createNewClient",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Marcos Vinicius\",\r\n    \"cpf\": \"271.705.000-00\",\r\n    \"birth_date\": \"08/04/1993\",\r\n    \"phone_number\": \"(63) 99213-1462\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/client",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateClient",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Marcos Vinicius\",\r\n    \"cpf\": \"567.046.210-67\",\r\n    \"birth_date\": \"08/04/1993\",\r\n    \"phone_number\": \"(63) 99213-1462\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/client/3",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"client",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getByNameOrCpf",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/client/search/marcos",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"client",
+						"search",
+						"marcos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllClients",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/client",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getClientById",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/client/3",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"client",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteClient",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/client/3",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"client",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost"
+		}
+	]
+}
