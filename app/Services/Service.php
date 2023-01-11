@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use App\Repositories\Repository;
-use Illuminate\Http\Request;
-
 abstract class Service {
 
     protected $repository;
