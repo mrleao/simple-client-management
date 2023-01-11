@@ -8,6 +8,8 @@ abstract class Repository implements IRepository {
 
     protected Model $model;
 
+	protected const QTTY_RECORD_RETURN = 10;
+
 	/**
 	 * returns records according to the passed ID.
 	 *
@@ -25,7 +27,7 @@ abstract class Repository implements IRepository {
 	 * @return mixed
 	 */
 	function getAll() {
-		return $this->model->all();
+		return $this->model->all()->paginate(self::QTTY_RECORD_RETURN);
 	}
 	
 	/**
@@ -59,7 +61,7 @@ abstract class Repository implements IRepository {
 	 * @return mixed
 	 */
 	function getBy(string $column, string $param) {
-		return $this->model->where($column, $param)->get();
+		return $this->model->where($column, $param)->paginate(self::QTTY_RECORD_RETURN);
 	}
 
 	/**
