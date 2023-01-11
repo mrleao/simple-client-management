@@ -20,4 +20,7 @@ class Client extends Model
         'birth_date',
         'phone_number'
     ];
+
+    public $timestamps = false;
+
 }

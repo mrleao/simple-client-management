@@ -3,10 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\ClientService;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+    protected $clientService;
+
+	public function __construct(ClientService $clientService)
+    {
+        $this->clientService = $clientService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +21,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -25,7 +32,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->clientService->create($request);
     }
 
     /**
