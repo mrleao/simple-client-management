@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('cpf', 11)->unique();
-            $table->datetime('birth_date');
+            $table->date('birth_date');
             $table->string('phone_number', 17)->nullable();
             $table->timestamps();
         });

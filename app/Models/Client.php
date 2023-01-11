@@ -20,7 +20,11 @@ class Client extends Model
         'birth_date',
         'phone_number'
     ];
-
-    public $timestamps = false;
+    
+    protected $casts = [
+        'birth_date' => 'datetime:d/m/Y',
+        'created_at' => 'datetime:d/m/Y H:i:s',
+        'updated_at' => 'datetime:d/m/Y H:i:s'
+    ];
 
 }

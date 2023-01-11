@@ -17,7 +17,7 @@ abstract class Service {
 	 * @return mixed
 	 */
 	function get(int $id) {
-		return $this->repository->get($id);
+		return $this->formatResponse($this->repository->get($id));
 	}
     
 	/**
@@ -26,7 +26,7 @@ abstract class Service {
 	 * @return mixed
 	 */
 	function getAll() {
-		return $this->repository->getAll();
+		return $this->formatResponse($this->repository->getAll());
 	}
 	
 	/**
@@ -37,16 +37,16 @@ abstract class Service {
 	 * @return mixed
 	 */
 	function delete(int $id) {
-		return $this->repository->delete($id);
+		return $this->formatResponse($this->repository->delete($id));
 	}
 
-    public function formatResponse($data, $msg = null)
+    public function formatResponse($data)
     {
         if (empty($data) || (is_countable($data) && count($data) == 0)) {
-            return $this->hasEmptyData('Registro não encontrato');
+            return $this->hasEmptyData('Nenhum registro encontrado');
         }
 
-        return $this->hasSuccessData($data, $msg != null ?? 'Sucesso');
+        return $this->hasSuccessData($data, 'Sucesso');
     }
 
     public function hasErrorRequiredData($errors)

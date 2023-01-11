@@ -57,12 +57,38 @@ class ClientService extends Service
 	 * update a record by id
 	 *
 	 * @param int $id
-	 * @param array $data
+	 * @param Request $request
 	 *
 	 * @return mixed
 	 */
-	function update(int $id, array $data) {
-		return $this->repository->update($id, $data);
+	function update(int $id, Request $request) {
+
+        $cpf = $this->cpfHelper->onlyNumbers($request->cpf);
+        $newbirthDate = $this->dateHelper->toUsaFormat($request->birth_date);
+
+        $request->request->add(['cpf' => $cpf, 'birth_date' => $newbirthDate]);
+
+        try {
+            $request->validate([
+                'name' => 'required',
+                'cpf'=> 'cpf|required|unique:clients,cpf,'.$id,
+                'birth_date' => 'required'
+            ]);
+        } catch (ValidationException $e) {
+            $errors = [
+                'errors' => $e->errors()
+            ];
+            return $this->hasErrorRequiredData($errors);
+        }
+
+		$data = [
+			'name' => $request->name,
+			'cpf' => $request->cpf,
+			'birth_date' => $request->birth_date,
+			'phone_numbner' => $request->phone_numbner,
+		];
+
+		return $this->formatResponse($this->repository->update($id, $data));
 	}
 	
 	/**
@@ -72,18 +98,10 @@ class ClientService extends Service
 	 *
 	 * @return mixed
 	 */
-	function getBy(string $column, string $param) {
-		return $this->repository->getBy($column, $param);
-	}
-
-	/**
-	 * delete a record by id
-	 *
-	 * @param int $id
-	 *
-	 * @return mixed
-	 */
-	function delete(int $id) {
-		return $this->repository->delete($id);
+	function getByLikeNameOrCpf(string $param) {
+		if (is_numeric($param)) {
+			$param = $this->cpfHelper->onlyNumbers($param);
+		}
+		return $this->formatResponse($this->repository->getByLikeNameOrCpf($param));
 	}
 }

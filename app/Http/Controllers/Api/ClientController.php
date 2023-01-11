@@ -14,6 +14,7 @@ class ClientController extends Controller
     {
         $this->clientService = $clientService;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +22,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        
+        return $this->clientService->getAll();
     }
 
     /**
@@ -43,7 +44,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->clientService->get($id);
     }
 
     /**
@@ -55,7 +56,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->clientService->update($id, $request);
     }
 
     /**
@@ -66,6 +67,11 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->clientService->delete($id);
+    }
+
+    public function getByLikeNameOrCpf(string $param)
+    {   
+        return $this->clientService->getByLikeNameOrCpf($param);
     }
 }

@@ -10,4 +10,8 @@ class ClientRepository extends Repository
     {
         $this->model = $model;
     }
+
+    public function getByLikeNameOrCpf(string $param){
+		return $this->model->where('name', 'like', "%$param%")->orWhere('cpf', 'like', "%$param%")->paginate(10);
+    }
 }

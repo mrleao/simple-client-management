@@ -5,8 +5,8 @@ namespace App\Helpers;
 class DateHelper{
 
     public function toUsaFormat($value) {
-        $cpf = preg_replace('/\D/', '', $value);
-        return $cpf;
+        $newbirthDate = date('Y-m-d', strtotime($value));
+        return $newbirthDate;
     }
 
 }
