@@ -27,7 +27,7 @@ abstract class Repository implements IRepository {
 	 * @return mixed
 	 */
 	function getAll() {
-		return $this->model->all()->paginate(self::QTTY_RECORD_RETURN);
+		return $this->model->paginate(self::QTTY_RECORD_RETURN);
 	}
 	
 	/**
@@ -50,6 +50,9 @@ abstract class Repository implements IRepository {
 	 * @return mixed
 	 */
 	function update(int $id, array $data) {
+		if (empty($this->model->find($id))) {
+			return null;
+		}
 		return $this->model->find($id)->update($data);
 	}
 	
@@ -72,6 +75,9 @@ abstract class Repository implements IRepository {
 	 * @return mixed
 	 */
 	function delete(int $id) {
+		if (empty($this->model->find($id))) {
+			return null;
+		}
 		return $this->model->find($id)->delete();
 	}
 }
