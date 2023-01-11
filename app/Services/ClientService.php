@@ -50,7 +50,7 @@ class ClientService extends Service
             return $this->hasErrorRequiredData($errors);
         }
 
-		return $this->repository->create($request->all());
+		return $this->formatResponse($this->repository->create($request->all()));
 	}
 	
 	/**
