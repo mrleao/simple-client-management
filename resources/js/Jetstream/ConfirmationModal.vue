@@ -48,21 +48,20 @@ const close = () => {
                     </svg>
                 </div>
 
-                <div class="mt-2 text-center sm:ml-4 sm:text-left">
+                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <h3 class="text-lg">
                         <slot name="title" />
                     </h3>
 
-                    <div class="mt-8">
+                    <div class="mt-2">
                         <slot name="content" />
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-row grid grid-cols-2 gap-2 px-6 py-4 bg-gray-100 text-right">
-            <slot name="cancel" />
-            <slot name="confirm" />
+        <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 text-right">
+            <slot name="footer" />
         </div>
     </Modal>
 </template>
