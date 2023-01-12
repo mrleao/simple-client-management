@@ -16,7 +16,7 @@ docker-compose up -d
 
 2 - Enter the container
 ```
-docker exec it - client-management bash
+docker exec -it client-management bash
 ```
 
 3 - Install the dependencies

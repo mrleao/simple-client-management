@@ -7,8 +7,11 @@ import ArrowLongLeft from '@/Assets/Icons/ArrowLongLeft.vue'
 import PencilSquare from '@/Assets/Icons/PencilSquare.vue'
 import Trash from '@/Assets/Icons/Trash.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 
 const clients = ref({data: {data: null}});
+const showConfirmDeleteModal = ref(false);
+const clientId = ref(0);
 
 const form = useForm({
     searchterm: ''
@@ -25,6 +28,7 @@ const showClients = (url) => {
 
 const deleteClient = (id) => {
     return axios.delete('api/client/'+id).then(response => {
+        showConfirmDeleteModal.value = false
         showClients('/api/client')
     });
 };
@@ -100,9 +104,11 @@ const getMatchingResults = (input) => {
                                     <td class="border-grey-light border p-3">
                                         <div class="grid grid-cols-2 gap-2">
                                             <div 
-                                                class=" cursor-pointer hover:text-blue-200 text-blue-400"><PencilSquare/></div>
-                                            <div @click="deleteClient(item.id)"
-                                                class="cursor-pointer hover:text-red-200 text-red-500"><Trash/></div>
+                                                class=" cursor-pointer hover:text-blue-200 text-blue-400"><PencilSquare/>
+                                            </div>
+                                            <div @click="showConfirmDeleteModal = true; clientId = item.id"
+                                                class="cursor-pointer hover:text-red-200 text-red-500"><Trash/>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -139,6 +145,27 @@ const getMatchingResults = (input) => {
                 <div v-else class="mt-12 text-center">
                     {{ clients.message }}
                 </div>
+        <!-- Delete Token Confirmation Modal -->
+        <ConfirmationModal :show="showConfirmDeleteModal" @close="showConfirmDeleteModal = false">
+            <template #title>
+                ATENÇÃO
+            </template>
+
+            <template #content>
+                Deseja realmente deletar esse registro?
+            </template>
+
+            <template #cancel>      
+                <PrimaryButton @click="showConfirmDeleteModal = false">
+                    Não
+                </PrimaryButton>
+            </template>
+            <template #confirm>      
+                <PrimaryButton @click="deleteClient(clientId)">
+                    Sim
+                </PrimaryButton>
+            </template>
+        </ConfirmationModal>
             </div>
         </div>
     </AppLayout>
