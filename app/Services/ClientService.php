@@ -2,8 +2,7 @@
 
 namespace App\Services;
 
-use App\Helpers\CpfHelper;
-use App\Helpers\DateHelper;
+use App\Helpers\FormatHelper;
 use App\Repositories\ClientRepository;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -12,15 +11,12 @@ class ClientService extends Service
 {
     protected $repository;
 
-    protected $dateHelper;
+    protected $formatHelper;
 
-    protected $cpfHelper;
-
-	public function __construct(ClientRepository $repository, DateHelper $dateHelper, CpfHelper $cpfHelper)
+	public function __construct(ClientRepository $repository, FormatHelper $formatHelper)
     {
         $this->repository = $repository;
-        $this->dateHelper = $dateHelper;
-        $this->cpfHelper = $cpfHelper;
+        $this->formatHelper = $formatHelper;
     }
 
 	/**
@@ -32,17 +28,24 @@ class ClientService extends Service
 	 */
 	function create(Request $request) {
 
-        $cpf = $this->cpfHelper->onlyNumbers($request->cpf);
-        $newbirthDate = $this->dateHelper->toUsaFormat($request->birth_date);
+        $cpf = !$request->cpf ? '' : $this->formatHelper->onlyNumbers($request->cpf);
+        $phoneNumber = !$request->phone_number ? '' : $this->formatHelper->onlyNumbers($request->phone_number);
+        $newBirthDate = !$request->birth_date ? '' : $this->formatHelper->toUsaFormat($request->birth_date);
 
-        $request->request->add(['cpf' => $cpf, 'birth_date' => $newbirthDate]);
-
+        $request->request->add(
+			[
+				'cpf' => $cpf, 
+				'phone_number' => $phoneNumber,
+				'birth_date' => $newBirthDate,
+			]
+		);
+		
         try {
-            $request->validate([
-                'name' => 'required',
-                'cpf'=> 'cpf|unique:clients,cpf|required',
-                'birth_date' => 'required'
-            ]);
+			$request->validate([
+				'name' => 'required',
+				'birth_date' => 'required',
+				'cpf'=> 'cpf|unique:clients,cpf,|required',
+			]);
         } catch (ValidationException $e) {
             $errors = [
                 'errors' => $e->errors()
@@ -62,12 +65,6 @@ class ClientService extends Service
 	 * @return mixed
 	 */
 	function update(int $id, Request $request) {
-
-        $cpf = $this->cpfHelper->onlyNumbers($request->cpf);
-        $newbirthDate = $this->dateHelper->toUsaFormat($request->birth_date);
-
-        $request->request->add(['cpf' => $cpf, 'birth_date' => $newbirthDate]);
-
         try {
             $request->validate([
                 'name' => 'required',
@@ -80,6 +77,11 @@ class ClientService extends Service
             ];
             return $this->hasErrorRequiredData($errors);
         }
+
+        $cpf = $this->formatHelper->onlyNumbers($request->cpf);
+        $newBirthDate = $this->formatHelper->toUsaFormat($request->birth_date);
+
+        $request->request->add(['cpf' => $cpf, 'birth_date' => $newBirthDate]);
 
 		$data = [
 			'name' => $request->name,
@@ -100,7 +102,7 @@ class ClientService extends Service
 	 */
 	function getByLikeNameOrCpf(string $param) {
 		if (is_numeric($param)) {
-			$param = $this->cpfHelper->onlyNumbers($param);
+			$param = $this->formatHelper->onlyNumbers($param);
 		}
 		return $this->formatResponse($this->repository->getByLikeNameOrCpf($param));
 	}

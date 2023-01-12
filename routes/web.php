@@ -1,20 +1,16 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return Inertia::render('Client/List');
 })->name('clients.list');
+
+Route::get('/novo-cliente', function () {
+    return Inertia::render('Client/Create');
+})->name('clients.create');
+
+Route::get('/editar-cliente/{id}', function ($id) {
+    return Inertia::render('Client/Edit', ['id' => $id]);
+})->name('clients.edit');

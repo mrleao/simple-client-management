@@ -7,6 +7,7 @@ import ArrowLongLeft from '@/Assets/Icons/ArrowLongLeft.vue'
 import PencilSquare from '@/Assets/Icons/PencilSquare.vue'
 import Trash from '@/Assets/Icons/Trash.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import ButtonLink from '@/Components/ButtonLink.vue';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 
 const clients = ref({data: {data: null}});
@@ -14,7 +15,7 @@ const showConfirmDeleteModal = ref(false);
 const clientId = ref(0);
 
 const form = useForm({
-    searchterm: ''
+    searchTerm: ''
 });
 
 const showClients = (url) => {
@@ -64,9 +65,9 @@ const getMatchingResults = (input) => {
         <div class="py-12">
             <div class="mx-auto sm:px-6 lg:px-8 bg-white p-8">
                 <div class="grid grid-cols-2 gap-2">
-                    <form @submit.prevent="getMatchingResults(form.searchterm)" class="flex relative w-full">
+                    <form @submit.prevent="getMatchingResults(form.searchTerm)" class="flex relative w-full">
                         <input 
-                        v-model="form.searchterm"
+                        v-model="form.searchTerm"
                         type="search" name="search" 
                         class="border-1 border-teal-400 focus:border-teal-400 transition h-10 px-5 pr-16 rounded-md focus:ring-teal-400 w-full text-black text-md" placeholder="Pesquisar pelo nome ou CPF" />
                         <button 
@@ -75,10 +76,8 @@ const getMatchingResults = (input) => {
                             <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                             </svg>
                         </button>
-                    </form>                  
-                    <PrimaryButton>
-                        Novo cliente
-                    </PrimaryButton>
+                    </form>
+                    <ButtonLink :href="route('clients.create')">Novo cliente</ButtonLink>
                 </div>
                 <div v-if="clients.data"
                     class="overflow-hidden flex items-center justify-center">
@@ -103,9 +102,9 @@ const getMatchingResults = (input) => {
                                     <td class="border-grey-light border hover:bg-gray-100 p-3 truncate"> {{  item.phone_number }}</td>
                                     <td class="border-grey-light border p-3">
                                         <div class="grid grid-cols-2 gap-2">
-                                            <div 
+                                            <a :href="route('clients.edit', item.id)"
                                                 class=" cursor-pointer hover:text-blue-200 text-blue-400"><PencilSquare/>
-                                            </div>
+                                            </a>
                                             <div @click="showConfirmDeleteModal = true; clientId = item.id"
                                                 class="cursor-pointer hover:text-red-200 text-red-500"><Trash/>
                                             </div>
@@ -114,10 +113,10 @@ const getMatchingResults = (input) => {
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="mt-3 text-center">
+                            Exibindo <span class="font-bold">{{clients.data.to}}</span> registros de um total de <span class="font-bold">{{clients.data.total}}</span>.
+                        </div>
                         <div v-if="!shouldHidePagination">
-                            <div class="mt-3 text-center">
-                                Exibindo <span class="font-bold">{{clients.data.to}}</span> registros de um total de <span class="font-bold">{{clients.data.total}}</span>.
-                            </div>
                             <div class="m-5 flex flex-row flex-nowrap justify-between md:justify-center items-center"  aria-label="Pagination">
                                 <div v-if="clients.data.prev_page_url" @click="showClients(clients.data.prev_page_url)" 
                                     class="cursor-pointer flex w-10 h-10 mx-1 justify-center items-center bg-white text-teal-400 hover:bg-teal-400 hover:text-white rounded-full border border-gray-200 hover:border-gray-300"
@@ -145,27 +144,27 @@ const getMatchingResults = (input) => {
                 <div v-else class="mt-12 text-center">
                     {{ clients.message }}
                 </div>
-        <!-- Delete Token Confirmation Modal -->
-        <ConfirmationModal :show="showConfirmDeleteModal" @close="showConfirmDeleteModal = false">
-            <template #title>
-                ATENÇÃO
-            </template>
+                <!-- Delete Token Confirmation Modal -->
+                <ConfirmationModal :show="showConfirmDeleteModal" @close="showConfirmDeleteModal = false">
+                    <template #title>
+                        ATENÇÃO
+                    </template>
 
-            <template #content>
-                Deseja realmente deletar esse registro?
-            </template>
+                    <template #content>
+                        Deseja realmente deletar esse registro?
+                    </template>
 
-            <template #cancel>      
-                <PrimaryButton @click="showConfirmDeleteModal = false">
-                    Não
-                </PrimaryButton>
-            </template>
-            <template #confirm>      
-                <PrimaryButton @click="deleteClient(clientId)">
-                    Sim
-                </PrimaryButton>
-            </template>
-        </ConfirmationModal>
+                    <template #cancel>      
+                        <PrimaryButton @click="showConfirmDeleteModal = false">
+                            Não
+                        </PrimaryButton>
+                    </template>
+                    <template #confirm>      
+                        <PrimaryButton @click="deleteClient(clientId)">
+                            Sim
+                        </PrimaryButton>
+                    </template>
+                </ConfirmationModal>
             </div>
         </div>
     </AppLayout>
