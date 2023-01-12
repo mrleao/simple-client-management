@@ -3,10 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\ClientService;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+    protected $clientService;
+
+	public function __construct(ClientService $clientService)
+    {
+        $this->clientService = $clientService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        return $this->clientService->getAll();
     }
 
     /**
@@ -25,7 +33,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->clientService->create($request);
     }
 
     /**
@@ -36,7 +44,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->clientService->get($id);
     }
 
     /**
@@ -48,7 +56,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->clientService->update($id, $request);
     }
 
     /**
@@ -59,6 +67,11 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->clientService->delete($id);
+    }
+
+    public function getByLikeNameOrCpf(string $param)
+    {   
+        return $this->clientService->getByLikeNameOrCpf($param);
     }
 }
